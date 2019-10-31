@@ -118,17 +118,26 @@ public class Excell extends Application {
 
         try {
             List<String> stringList = Files.readAllLines(Paths.get(fichier.getPath()));
-            for (int i = 0; i < stringList.size(); i++) {
+            for (int i = 0; i < 2; i++) {
                 listDonnee.add(stringList.get(i).split(", "));
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+
         }
         XYChart.Series series = new XYChart.Series();
         series.setName("Données 1");
-        for (int i = 0; i < listDonnee.get(0).length; i++) {
-            series.getData().add(new XYChart.Data<>(listDonnee.get(0)[i], Integer.parseInt(listDonnee.get(1)[i])));
+
+
+        try {
+
+
+            for (int i = 0; i < listDonnee.get(0).length || i < listDonnee.get(1).length; i++) {
+                    series.getData().add(new XYChart.Data<>(listDonnee.get(0)[i], Integer.parseInt(listDonnee.get(1)[i])));
+            }
+        }catch (Exception e){
+            series =null;
         }
+
 
         return series;
     }
@@ -151,10 +160,14 @@ public class Excell extends Application {
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichier Image", "*." + fileType));
         WritableImage image = primaryStage.getScene().snapshot(null);
         File file = fileChooser.showSaveDialog(primaryStage);
-        try {
-            ImageIO.write(SwingFXUtils.fromFXImage(image, null), fileType, file);
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (file != null) {
+
+
+            try {
+                ImageIO.write(SwingFXUtils.fromFXImage(image, null), fileType, file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
